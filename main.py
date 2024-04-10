@@ -42,17 +42,17 @@ def write_dat_file(intersections, paths, fixed, prohibited, path_flow, intersect
         file.write(f'set PATHS := {" ".join(paths)};\n')
         file.write(f'set FIXED := {" ".join(fixed)};\n')
         file.write(f'set PROHIBITED := {" ".join(prohibited)};\n')
-        file.write(f'set INTERSECTIONS_PATHS := {" ".join(intersections_paths)};\n')
+        file.write(f'set INTERSECTIONS_PATHS := {" ".join(intersections_paths)};\n') # está en formato (intersección, camino)
         file.write('param pf :=\n')
         for path_id, flow in path_flow.items():
             file.write(f'  {path_id} {flow}\n')
         file.write(';\n')
 
-# Ruta al archivo de entrada y salida
 input_file_path = 'datos.txt'
 output_dat_file_path = 'model.dat'
 
 # Procesar los datos
 data = parse_data(input_file_path)
+
 # Escribir el archivo .dat
 write_dat_file(*data, output_dat_file_path)
