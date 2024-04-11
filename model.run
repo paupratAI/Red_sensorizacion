@@ -1,0 +1,37 @@
+# Cargar archivos 
+model model.mod;
+data model.dat;
+
+# Resolver el problema  
+option solver cplex;  
+solve;
+
+# Mostrar los resultados de las variables y objetivos principales
+display x;
+display c;
+display pf;
+
+# Mostrar el valor de la función objetivo
+display TotalFlow;
+
+# Abrir archivo para guardar los resultados
+option display_output "output.txt";
+
+# Guardar los resultados en un archivo
+printf: "Results of x (intersections with sensors):\n";
+for {i in INTERSECTIONS} {
+    printf "%s : %d\n", i, x[i];
+}
+
+printf: "Results of c (paths that are monitored):\n";
+for {i in PATHS} {
+    printf "%s : %d\n", i, c[i];
+}
+
+printf: "Flow values (pf) for each path:\n";
+for {i in PATHS} {
+    printf "%s : %f\n", i, pf[i];
+}
+
+# Cerrar archivo
+option display_output "";
