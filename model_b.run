@@ -1,3 +1,6 @@
+# Borrar los anterior comandos en AMPL
+reset;
+
 # Cargar archivos 
 model model_b.mod;
 data model_b.dat;
