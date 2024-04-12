@@ -6,10 +6,10 @@ data model_b.dat;
 option solver cplex;  
 solve;
 
-# Mostrar los resultados de las variables y objetivos principales
-display x;
-display c;
-display pf;
+# Descomentar las siguientes tres líneas para mostrar los resultados de las variables y objetivos principales
+#display x;
+#display c;
+#display pf;
 
 # Mostrar el valor de la función objetivo
 display TotalFlow;
