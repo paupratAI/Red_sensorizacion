@@ -1,6 +1,6 @@
 # Cargar archivos 
-model model.mod;
-data model.dat;
+model model_b.mod;
+data model_b.dat;
 
 # Resolver el problema  
 option solver cplex;  
@@ -19,19 +19,7 @@ option display_output "output.txt";
 
 # Guardar los resultados en un archivo
 printf: "Results of x (intersections with sensors):\n";
-for {i in INTERSECTIONS} {
-    printf "%s : %d\n", i, x[i];
-}
-
-printf: "Results of c (paths that are monitored):\n";
-for {i in PATHS} {
-    printf "%s : %d\n", i, c[i];
-}
-
-printf: "Flow values (pf) for each path:\n";
-for {i in PATHS} {
-    printf "%s : %f\n", i, pf[i];
-}
+printf {i in INTERSECTIONS: x[i] >= 1} "%s\n", i;
 
 # Cerrar archivo
 option display_output "";

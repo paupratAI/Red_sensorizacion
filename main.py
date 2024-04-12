@@ -1,17 +1,16 @@
-def parse_data(file_path):
-    # Diccionarios para almacenar los datos
+def parse_data(file_path, version):
+    # Inicialización de todas las listas y diccionarios
     intersections = []
     paths = []
     fixed = []
     prohibited = []
     path_flow = {}
     intersections_paths = []
-    
-    # Leer el archivo
+    intersection_neighborhood = []
+
     with open(file_path, 'r') as file:
         content = file.read()
-        
-    # Dividir los contenidos por secciones
+
     sections = content.split('\n\n')
     for section in sections:
         lines = section.split('\n')
@@ -33,26 +32,36 @@ def parse_data(file_path):
             for line in lines[1:]:
                 path_id, intersection_id = line.split()
                 intersections_paths.append(f'({intersection_id}, {path_id})')
+        elif 'intersection_neighborhood' in header and version == 'b':
+            for line in lines[1:]:
+                i1, i2 = line.split()
+                intersection_neighborhood.append(f'({i1}, {i2})')
 
-    return intersections, paths, fixed, prohibited, path_flow, intersections_paths
+    return (intersections, paths, fixed, prohibited, path_flow, intersections_paths, intersection_neighborhood)
 
-def write_dat_file(intersections, paths, fixed, prohibited, path_flow, intersections_paths, dat_file_path):
+def write_dat_file(intersections, paths, fixed, prohibited, path_flow, intersections_paths, dat_file_path, version, intersection_neighborhood=None):
     with open(dat_file_path, 'w') as file:
         file.write(f'set INTERSECTIONS := {" ".join(intersections)};\n')
         file.write(f'set PATHS := {" ".join(paths)};\n')
         file.write(f'set FIXED := {" ".join(fixed)};\n')
         file.write(f'set PROHIBITED := {" ".join(prohibited)};\n')
-        file.write(f'set INTERSECTIONS_PATHS := {" ".join(intersections_paths)};\n') # está en formato (intersección, camino)
+        file.write(f'set INTERSECTIONS_PATHS := {" ".join(intersections_paths)};\n')
+        if version == 'b':
+            file.write(f'set NEIGHBORHOOD := {" ".join(intersection_neighborhood)};\n')
         file.write('param pf :=\n')
         for path_id, flow in path_flow.items():
             file.write(f'  {path_id} {flow}\n')
         file.write(';\n')
 
+# Preguntar que
+version = input("Ingrese 'a' para generar el archivo model_a.dat perteneciente al primer apartado, o 'b' para generar el archivo model_b.dat, correspondiente al segundo apartado: ").lower()
 input_file_path = 'datos.txt'
-output_dat_file_path = 'model.dat'
+output_dat_file_path = 'model_a.dat' if version == 'a' else 'model_b.dat'
 
-# Procesar los datos
-data = parse_data(input_file_path)
+data = parse_data(input_file_path, version)
 
-# Escribir el archivo .dat
-write_dat_file(*data, output_dat_file_path)
+# Llamada a la función con los argumentos adecuados
+if version == 'a':
+    write_dat_file(*data[:6], output_dat_file_path, version)
+else:
+    write_dat_file(*data[:6], output_dat_file_path, version, data[6])
