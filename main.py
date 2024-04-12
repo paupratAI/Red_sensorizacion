@@ -16,6 +16,7 @@ def parse_data(file_path, version):
         lines = section.split('\n')
         header = lines[0].strip()
         
+        # Asignación de datos a las estructuras correspondientes
         if 'INTERSECTIONS' in header:
             intersections = lines[1].split('\t')
         elif 'PATHS' in header:
@@ -41,6 +42,7 @@ def parse_data(file_path, version):
 
 def write_dat_file(intersections, paths, fixed, prohibited, path_flow, intersections_paths, dat_file_path, version, intersection_neighborhood=None):
     with open(dat_file_path, 'w') as file:
+        # Escritura de datos en el archivo .dat
         file.write(f'set INTERSECTIONS := {" ".join(intersections)};\n')
         file.write(f'set PATHS := {" ".join(paths)};\n')
         file.write(f'set FIXED := {" ".join(fixed)};\n')
@@ -53,7 +55,7 @@ def write_dat_file(intersections, paths, fixed, prohibited, path_flow, intersect
             file.write(f'  {path_id} {flow}\n')
         file.write(';\n')
 
-# Preguntar que
+# Elección del usuario para generar 'model_a.dat' o 'model_b.dat'
 version = input("Ingrese 'a' para generar el archivo model_a.dat perteneciente al primer apartado, o 'b' para generar el archivo model_b.dat, correspondiente al segundo apartado: ").lower()
 input_file_path = 'datos.txt'
 output_dat_file_path = 'model_a.dat' if version == 'a' else 'model_b.dat'
