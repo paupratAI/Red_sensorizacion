@@ -3,11 +3,11 @@ set INTERSECTIONS;
 set PATHS;
 set FIXED;
 set PROHIBITED;
-set INTERSECTIONS_PATHS within {INTERSECTIONS, PATHS}; # Conjunto de intersecciones y caminos que están conectados
+set INTERSECTIONS_PATHS within {INTERSECTIONS, PATHS}; 
 set NEIGHBORHOOD within {INTERSECTIONS, INTERSECTIONS};
 
 # Parámetros
-param pf {i in PATHS};  # pf_i representa el flujo en el camino i. Utilizar pf[i] para acceder al valor de pf_i
+param pf {i in PATHS};  
 
 # Variables
 var x {i in INTERSECTIONS} binary;
